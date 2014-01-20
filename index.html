@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="app">
+<head lang="en">
+    <meta charset="utf-8">
+    <title>One navbar plus angular views</title>
+
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
+
+    <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+    <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+    <script type="text/javascript" src="//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
+
+
+    <style type="text/css">
+        .bs-example{
+            margin: 20px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+<div class="bs-example">
+    <div class="navbar navbar-default" role="navigation" bs-navbar>
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Cedros</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li data-match-route="/?(navbar)?"><a href="#/">Home</a></li>
+            <li data-match-route="/view1"><a href="#/view1">View1</a></li>
+            <li data-match-route="/view2"><a href="#/view2">View2</a></li>
+        </ul>
+    </div>
+
+
+    <div>
+        <ng-view></ng-view>
+    </div>
+</div>
+
+
+</body>
+</html>
