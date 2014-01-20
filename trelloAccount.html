@@ -1,0 +1,14 @@
+<h1>Trello account page</h1>
+
+<button ng-click="onUnlog()" class="btn">Unlog</button>
+<button ng-click="logToTrello()" class="btn btn-lg">Log To Trello</button>
+<button class="btn" ng-click="model.refreshMyCards()">Refresh Cards</button>
+
+<h2>My Cards :</h2>
+<div class="listCardsDiv2">
+<accordion close-others="false">
+    <accordion-group heading="{{card.name}}" ng-repeat="card in model.myCards">
+        {{card.desc}}
+    </accordion-group>
+</accordion>
+</div>
