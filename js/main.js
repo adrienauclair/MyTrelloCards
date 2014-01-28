@@ -40,12 +40,12 @@ app.filter('encodeURIComponent', function () {
 });
 
 
-app.service('TrelloNg', [ '$q', '$rootScope', function($q, $rootScope){
+app.service('TrelloLowLevel', [ '$q', '$rootScope', function($q, $rootScope){
 
-    var TrelloNg = {};
+    var TrelloObj = {};
 
     // wrap Trello queries in angular promise
-    TrelloNg.query = function(entity_name) { // success
+    TrelloObj.query = function(entity_name) { // success
         var deferred = $q.defer();
         Trello.get(entity_name, function(data) {
             // wrap call to resolve in $apply as this function is out of the main event loop
@@ -61,8 +61,40 @@ app.service('TrelloNg', [ '$q', '$rootScope', function($q, $rootScope){
         return deferred.promise;
     };
 
-    return TrelloNg;
+    return TrelloObj;
 }]);
+
+
+app.service('TrelloMgr', ['TrelloLowLevel', '$rootScope' , function(TrelloLowLevel,$rootScope) {
+
+    var trelloContainer = {};
+    trelloContainer.cards = {};
+
+    trelloContainer.getCards = function() {
+        return trelloContainer.cards;
+    };
+
+    trelloContainer.refreshCards = function() {
+        console.log( "refresh cards");
+        trelloQueryPromise = TrelloLowLevel.query('members/adrienauclair1/cards?filter=open');
+        console.log("right after query");
+        trelloQueryPromise.then(
+            function (allCards) {
+                trelloContainer.cards = allCards;
+                console.log("in then");
+                console.log( trelloContainer.cards );
+                console.log("emit event");
+                $rootScope.$broadcast('CARDS_UPDATED', 'no params value2');
+            }
+        );
+
+        console.log( "after then");
+        console.log( trelloContainer.cards );
+    }
+
+    return trelloContainer;
+}])
+
 
 
 app.controller("MainCtrl", function($scope) {
@@ -74,51 +106,51 @@ app.controller("MainCtrl", function($scope) {
 });
 
 
-app.controller('trelloAccount', ['$scope', 'TrelloNg', function ($scope, TrelloNg) {
+app.controller('trelloAccount', ['$scope', 'TrelloMgr', function ($scope, TrelloMgr) {
 
-        $scope.onUnlog = function() {
-            Trello.deauthorize();
-            console.log( Trello.authorized() );
-            alert("you have been unlogged");
-        }
+    $scope.model = {}
+    $scope.onUnlog = function() {
+        Trello.deauthorize();
+        console.log( Trello.authorized() );
+        alert("you have been unlogged");
+    };
 
-        var onAuthorize = function() {
-            alert("Authorized");
-        };
+    $scope.$on('$viewContentLoaded', function()
+    {
+        $scope.model.myCards = TrelloMgr.getCards();
+    });
 
-        $scope.logToTrello = function() {
-            Trello.authorize({
-                type: "popup",
-                scope: { write: false, read: true },
-                persist: true,
-                success: onAuthorize
-            });
-            console.log( Trello.authorized() );
-        }
+    $scope.$on('CARDS_UPDATED',function(response,params){
+        $scope.model.myCards = TrelloMgr.getCards();
+    })
 
-
-        //---------------------------
-        $scope.model = {}
-        $scope.model.myCards = {};
-        $scope.model.trelloQueryPromise = {};
-
-        $scope.model.refreshMyCards = function () {
-
-            $scope.model.trelloQueryPromise = TrelloNg.query('members/adrienauclair1/cards?filter=open');
-            $scope.model.trelloQueryPromise.then(
-                function (allCards) {
-                    $scope.model.myCards = allCards;
-                    console.log("in then");
-                }
-            );
-
-            console.log( "after then");
-            console.log( $scope.model.myCards );
-
-        };
+    var onAuthorize = function() {
+        alert("Authorized");
+    };
 
 
-    }]);
+    $scope.logToTrello = function() {
+        Trello.authorize({
+            type: "popup",
+            scope: { write: false, read: true },
+            persist: true,
+            success: onAuthorize
+        });
+        console.log( Trello.authorized() );
+    }
+
+
+
+
+    $scope.model.refresh = function() {
+        TrelloMgr.refreshCards();
+        console.log( "after refresh in ctrl");
+    };
+
+
+}]);
+
+
 
 app.controller("AppCtrl", function($scope) {
     $scope.model = {
