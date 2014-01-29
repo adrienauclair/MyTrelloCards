@@ -53,6 +53,7 @@ app.service('TrelloLowLevel', [ '$q', '$rootScope', function($q, $rootScope){
                 deferred.resolve(data);
             });
         }, function(response) { // error
+            console.log("trello error")
             $rootScope.$apply(function() {
                 deferred.reject(response);
             });
@@ -109,11 +110,7 @@ app.controller("MainCtrl", function($scope) {
 app.controller('trelloAccount', ['$scope', 'TrelloMgr', function ($scope, TrelloMgr) {
 
     $scope.model = {}
-    $scope.onUnlog = function() {
-        Trello.deauthorize();
-        console.log( Trello.authorized() );
-        alert("you have been unlogged");
-    };
+
 
     $scope.$on('$viewContentLoaded', function()
     {
@@ -124,28 +121,71 @@ app.controller('trelloAccount', ['$scope', 'TrelloMgr', function ($scope, Trello
         $scope.model.myCards = TrelloMgr.getCards();
     })
 
-    var onAuthorize = function() {
-        alert("Authorized");
-    };
-
-
-    $scope.logToTrello = function() {
-        Trello.authorize({
-            type: "popup",
-            scope: { write: false, read: true },
-            persist: true,
-            success: onAuthorize
-        });
-        console.log( Trello.authorized() );
-    }
-
-
-
-
     $scope.model.refresh = function() {
         TrelloMgr.refreshCards();
         console.log( "after refresh in ctrl");
     };
+
+
+    //--------------- LOGIN ----------------------------------------
+    $scope.login = {
+        isLoggedIn: false
+    };
+
+    var updateLogin = function () {
+        $scope.login.isLoggedIn = Trello.authorized();
+        console.log("update login")
+        console.log($scope.login.isLoggedIn)
+    };
+
+
+    // log to trello account function
+    // if the user is not already logged, a popup will open and ask for credential
+    // else, it will carry on withtout poping up
+    $scope.logToTrello = function() {
+        Trello.authorize({
+            type: "popup",
+            name: "Adrien Auclair test app",
+            scope: { write: false, read: true },
+            persist: true,                          // token is saved on local storage
+            success: function () {
+                Trello.authorize({
+                    interactive: false,
+                    success: function () {
+                        updateLogin();
+                        $scope.model.refresh();
+                    }
+                });
+            }
+        });
+        console.log( Trello.authorized() );
+    };
+
+    $scope.login.logoutFromTrello = function () {
+        Trello.deauthorize();
+        updateLogin();
+        $scope.model.myCards = {};
+    };
+
+
+
+    $scope.loginOpts = {
+        backdropFade: true,
+        dialogFade: true,
+        backdropClick: false
+    };
+
+    Trello.authorize({
+        interactive: false,
+        success: updateLogin
+    });
+    console.log("is logged :")
+    console.log($scope.login.isLoggedIn)
+
+    if( $scope.login.isLoggedIn )
+    {
+        $scope.model.refresh();
+    }
 
 
 }]);

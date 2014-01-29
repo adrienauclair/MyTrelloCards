@@ -1,14 +1,20 @@
-<h1>Trello account page</h1>
-
-<button ng-click="onUnlog()" class="btn">Unlog</button>
-<button ng-click="logToTrello()" class="btn btn-lg">Log To Trello</button>
-<button class="btn" ng-click="model.refresh()">Refresh Cards</button>
-
-<h2>My Cards : {{model.myCards.length}}</h2>
-<div class="listCardsDiv2">
-<accordion close-others="false">
-    <accordion-group heading="{{card.name}}" ng-repeat="card in model.myCards">
-        {{card.desc}}
-    </accordion-group>
-</accordion>
+<div ng-hide=login.isLoggedIn>
+    This app needs to be connected to your Trello account.
+    <button ng-click="logToTrello()"            class="btn">Log To Trello</button>
 </div>
+<button ng-show=login.isLoggedIn ng-click="login.logoutFromTrello()" class="btn">Unlog</button>
+<button ng-show=login.isLoggedIn ng-click="model.refresh()"          class="btn">Refresh Cards</button>
+
+
+
+
+<div ng-show=login.isLoggedIn class="listCardsDiv2">
+    <h2>My Cards : {{model.myCards.length}}</h2>
+    <accordion close-others="false">
+        <accordion-group heading="{{card.name}}" ng-repeat="card in model.myCards">
+            {{card.desc}}
+        </accordion-group>
+    </accordion>
+</div>
+
+
