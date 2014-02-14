@@ -1,9 +1,6 @@
 var app = angular.module("app", ["ngRoute","mgcrea.ngStrap",'ui.bootstrap']);
 
 
-//var app = angular.module("app", ["ngRoute",'ui.bootstrap']);
-
-
 app.config(function($routeProvider) {
     $routeProvider.when('/',
         {

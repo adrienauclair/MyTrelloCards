@@ -2,11 +2,9 @@
     This app needs to be connected to your Trello account.
     <button ng-click="logToTrello()"            class="btn">Log To Trello</button>
 </div>
+        s
 <button ng-show=login.isLoggedIn ng-click="login.logoutFromTrello()" class="btn">Unlog</button>
 <button ng-show=login.isLoggedIn ng-click="model.refresh()"          class="btn">Refresh Cards</button>
-
-
-
 
 <div ng-show=login.isLoggedIn class="listCardsDiv2">
     <h2>My Cards : {{model.myCards.length}}</h2>
