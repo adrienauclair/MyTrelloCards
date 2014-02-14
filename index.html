@@ -2,18 +2,23 @@
 <html ng-app="app">
 <head lang="en">
     <meta charset="utf-8">
-    <title>One navbar plus angular views</title>
+    <title>Trello cards</title>
 
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
     <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap-theme.min.css">
 
     <script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
     <script type="text/javascript" src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
-    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.min.js"></script>
-    <script type="text/javascript" src="//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
-    <script src="https://api.trello.com/1/client.js?key=14d8ec00ef08abb66edc8b8e6659ee51"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-route.min.js"></script>
+    <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.12/angular-animate.min.js"></script>
 
+    <script type="text/javascript" src="//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.min.js"></script>
+    <script type="text/javascript" src="//rawgithub.com/mgcrea/angular-strap/master/dist/angular-strap.tpl.min.js"></script>
+
+    <script type="text/javascript" src="app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+
+    <script src="https://api.trello.com/1/client.js?key=14d8ec00ef08abb66edc8b8e6659ee51"></script>
 
     <script src="app/bower_components/sass-bootstrap/js/affix.js"></script>
     <script src="app/bower_components/sass-bootstrap/js/alert.js"></script>
@@ -28,8 +33,6 @@
     <script src="app/bower_components/sass-bootstrap/js/tooltip.js"></script>
     <script src="app/bower_components/sass-bootstrap/js/popover.js"></script>
 
-    <script src="app/bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-
     <script type="text/javascript" src="js/main.js"></script>
 
     <style type="text/css">
@@ -41,28 +44,22 @@
 
 
 <body>
-
 <div class="bs-example">
     <div class="navbar navbar-default" role="navigation" bs-navbar>
         <div class="navbar-header">
-            <a class="navbar-brand" href="#">Cedros</a>
+            <a class="navbar-brand" href="#">Test page</a>
         </div>
         <ul class="nav navbar-nav">
             <li data-match-route="/?(navbar)?"><a href="#/">Home</a></li>
             <li data-match-route="/view1"><a href="#/view1">View1</a></li>
             <li data-match-route="/view2"><a href="#/view2">View2</a></li>
             <li data-match-route="/trelloAccount"><a href="#/trelloAccount">trelloAccount</a></li>
-
-
         </ul>
     </div>
-
 
     <div>
         <ng-view></ng-view>
     </div>
 </div>
-
-
 </body>
 </html>

@@ -1,6 +1,8 @@
 var app = angular.module("app", ["ngRoute","mgcrea.ngStrap",'ui.bootstrap']);
 
 
+//var app = angular.module("app", ["ngRoute",'ui.bootstrap']);
+
 
 app.config(function($routeProvider) {
     $routeProvider.when('/',
@@ -77,7 +79,7 @@ app.service('TrelloMgr', ['TrelloLowLevel', '$rootScope' , function(TrelloLowLev
 
     trelloContainer.refreshCards = function() {
         console.log( "refresh cards");
-        trelloQueryPromise = TrelloLowLevel.query('members/adrienauclair1/cards?filter=open');
+        trelloQueryPromise = TrelloLowLevel.query('members/me/cards?filter=open');
         console.log("right after query");
         trelloQueryPromise.then(
             function (allCards) {
